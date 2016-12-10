@@ -1,5 +1,7 @@
 <?php
-    class Parser {
+    namespace OsuTournament;
+    class Parser
+    {
         private $httph = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36';
         public function splits($data, $first, $end, $num = 1)
         {
@@ -8,20 +10,18 @@
             $temp = $temp[0];
             return $temp;
         }
-        public function WEBParsing($url, $cookie=NULL, $headershow=TRUE, $postparam=NULL, $otherheader=NULL)
+        public function WEBParsing($url, $cookie = NULL, $headershow = TRUE, $postparam = NULL, $otherheader = NULL)
         {
-            $uri = parse_url($url);
-            if (!isset($uri['port'])) $uri['port'] = 80;
-            if (!isset($uri['path'])) $uri['path'] = "/";
             $ch = curl_init();
-            $opts = array(CURLOPT_RETURNTRANSFER => true,
+            $opts = array(
+                CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_URL => $url,
                 CURLOPT_TIMEOUT => 10,
                 CURLOPT_CONNECTTIMEOUT => 5,
                 CURLOPT_SSL_VERIFYPEER => FALSE,
                 CURLOPT_HEADER => $headershow,
                 CURLOPT_USERAGENT => $this->httph
-                );
+            );
             curl_setopt_array($ch, $opts);
             if ($otherheader) curl_setopt($ch, CURLOPT_HTTPHEADER, $otherheader);
             if ($cookie) curl_setopt($ch, CURLOPT_COOKIE, $cookie);
