@@ -90,12 +90,8 @@
          */
         public function CheckUser($osuid, $mode)
         {
-            $osuid = strtolower($osuid);
-            if ($osuid !== $this->OsuID && $osuid !== strtolower($this->RealID))
-                $this->ResetObject();
-
+            $this->ResetObject();
             $this->SelectMode($mode);
-
             // Transfer osu! ID to Num
             $this->data_profile = $this->Parser->WEBParsing('https://osu.ppy.sh/u/' . $osuid);
             $this->OsuID = $this->Parser->splits($this->data_profile, 'var userId = ', ';');
