@@ -34,7 +34,7 @@
             $data = curl_exec($ch);
             curl_close($ch);
             if ($curl_errno > 0)
-                return 0;
+                $this->ErrorEcho(14, 'Connect Error!!!');
             return ($data) ? $data : false;
         }
     }
