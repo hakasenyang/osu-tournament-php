@@ -90,7 +90,8 @@
          */
         public function CheckUser($osuid, $mode)
         {
-            if ($osuid !== $this->OsuID && $osuid !== $this->RealID)
+            $osuid = strtolower($osuid);
+            if ($osuid !== $this->OsuID && $osuid !== strtolower($this->RealID))
                 $this->ResetObject();
 
             $this->SelectMode($mode);
