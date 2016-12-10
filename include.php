@@ -3,7 +3,6 @@
     require_once 'include/webparser.php';
     require_once 'include/check.php';
 
-    $Check = new OsuTournament\Check();
     /**
      * In production DB.
      */
