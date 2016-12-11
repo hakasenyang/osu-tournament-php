@@ -11,7 +11,8 @@
         if ($Check->CheckOccupation() === true)
             echo '<br>You are applied!';
         elseif (empty($occu))
-            echo '<br>Please change occupation to ' . $Check->GetOccupation();
+            echo '<br>Please change occupation to ' . $Check->GetOccupation() . '<br>Your Occupation is blank.';
+			echo '<br>';
         else
             echo '<br>Please change occupation to ' . $Check->GetOccupation() . '<br>Your Occupation : ' . $occu;
         echo '<br>';
