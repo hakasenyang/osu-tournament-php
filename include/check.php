@@ -14,13 +14,14 @@
          */
         public $RealID, $OsuID;
         /**
-         * [$PlayCount User Playcount]
-         * [$Performance User Performance]
-         * [$Rank User Ranking]
+         * [$Playcount User playcount]
+         * [$Performance User performance]
+         * [$Rank User ranking]
          * [$Occupation Check user occupation]
+         * [$Occupation_Set Setting user occupation data]
          * @var [string]
          */
-        private $PlayCount, $Performance, $Rank, $Occupation;
+        public $Playcount, $Performance, $Rank, $Occupation, $Occupation_Set;
         /**
          * [$mode osu! mode
          *        0 = osu! standard (standard)
@@ -29,11 +30,10 @@
          *        3 = osu!mania (mania)
          * ]
          * @var [int]
-         * [$occu User Occupation Data]
-         * @var [string]
          */
-        private $mode, $occu;
+        private $mode;
         /**
+         * Temp data
          * [$data_profile description]
          * [$data_userdata description]
          * @var [string]
@@ -100,21 +100,30 @@
                 return false;
 
             $this->Occupation = $this->Parser->splits($this->data_profile, '<div title=\'Occupation\'><i class=\'icon-pencil\'></i><div>', '</div></div>');
+
+            $this->GetOccupation();
+            $this->GetUserData();
+
             return $this->OsuID;
         }
-        public function CheckOccupation()
+        /**
+         * Not using this function.
+         */
+        /*
+        private function CheckOccupation()
         {
             if(empty($this->OsuID))
                 throw new \Exception('Please, CheckUser(OsuID) first!');
-            if(empty($this->occu))
+            if(empty($this->Occupation_Set))
                 $this->GetOccupation();
 
-            if ($this->occu === $this->Occupation)
+            if ($this->Occupation_Set === $this->Occupation)
                 return true;
             else
                 return $this->Occupation;
         }
-        public function GetOccupation()
+        */
+        private function GetOccupation()
         {
             /**
              * md5 = $RealID / $OsuID / date('Ymd') / $mode
@@ -122,9 +131,9 @@
              */
             if(empty($this->OsuID))
                 throw new \Exception('Please, CheckUser(OsuID) first!');
-            if(empty($this->occu))
-                $this->occu = substr(md5($this->RealID . $this->OsuID . date('Ymd') . $this->mode), 0, 20);
-            return $this->occu;
+            if(empty($this->Occupation_Set))
+                $this->Occupation_Set = substr(md5($this->RealID . $this->OsuID . date('Ymd') . $this->mode), 0, 20);
+            return $this->Occupation_Set;
         }
         private function GetUserData()
         {
@@ -141,30 +150,12 @@
 
             if (strpos($this->data_userdata, 'This user has not played enough, or has not played recently.') === false)
             {
-                $this->PlayCount = $this->Parser->splits($this->data_userdata, '<b>Play Count</b>: ', '</div>');
+                $this->Playcount = $this->Parser->splits($this->data_userdata, '<b>Play Count</b>: ', '</div>');
                 $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'Performance</a>: ', 'pp'));
                 $this->Rank = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'pp (#', ')'));
             }
             else
                 return false;
-        }
-        /**
-         * [CheckPlayCount Get PlayCount]
-         */
-        public function CheckPlayCount()
-        {
-            $this->GetUserData();
-            return $this->PlayCount;
-        }
-        public function CheckPerformance()
-        {
-            $this->GetUserData();
-            return $this->Performance;
-        }
-        public function CheckRank()
-        {
-            $this->GetUserData();
-            return $this->Rank;
         }
         public function ResetObject()
         {

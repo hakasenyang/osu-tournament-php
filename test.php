@@ -6,23 +6,20 @@
     {
         global $Check;
         echo $Check->RealID . ' (' . $Check->OsuID . ')';
-        $occu = $Check->CheckOccupation();
 
-        if ($Check->CheckOccupation() === true)
+        if ($Check->Occupation_Set === $Check->Occupation)
             echo '<br>You are applied!';
-        elseif (empty($occu))
-            echo '<br>Please change occupation to ' . $Check->GetOccupation() . '<br>Your Occupation is blank.';
+        elseif (empty($Check->Occupation))
+            echo '<br>Please change occupation to ' . $Check->Occupation_Set . '<br>Your Occupation is blank.';
         else
-            echo '<br>Please change occupation to ' . $Check->GetOccupation() . '<br>Your Occupation : ' . $occu;
+            echo '<br>Please change occupation to ' . $Check->Occupation_Set . '<br>Your Occupation : ' . $Check->Occupation;
         echo '<br>';
 
-        if (empty($Check->CheckPerformance()))
-            echo 'Error<br>';
-        echo 'Play Count : ' . $Check->CheckPlayCount();
+        echo 'Play Count : ' . $Check->Playcount;
         echo '<br>';
-        echo 'Performance : ' . $Check->CheckPerformance();
+        echo 'Performance : ' . $Check->Performance;
         echo '<br>';
-        echo 'Ranking : ' . $Check->CheckRank();
+        echo 'Ranking : ' . $Check->Rank;
         echo '<br><br>';
     }
     $Check->CheckUser(2558286, 0);
