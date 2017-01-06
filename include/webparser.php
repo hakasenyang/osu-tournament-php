@@ -32,9 +32,9 @@
             }
 
             $data = curl_exec($ch);
+            if (curl_errno($ch))
+                return false;
             curl_close($ch);
-            if ($curl_errno > 0)
-                $this->ErrorEcho(14, 'Connect Error!!!');
             return ($data) ? $data : false;
         }
     }
