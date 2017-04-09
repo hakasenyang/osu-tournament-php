@@ -7,7 +7,7 @@
         global $Check;
         if(empty($Check->RealID) || empty($Check->OsuID))
         {
-            echo '<br>User not found<br><br>';
+            echo 'User not found<br><br>';
             return false;
         }
         echo $Check->RealID . ' (' . $Check->OsuID . ')';
