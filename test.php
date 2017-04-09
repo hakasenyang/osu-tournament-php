@@ -5,6 +5,11 @@
     function GetDataTest()
     {
         global $Check;
+        if(empty($Check->RealID) || empty($Check->OsuID))
+        {
+            echo '<br>User not found<br><br>';
+            return false;
+        }
         echo $Check->RealID . ' (' . $Check->OsuID . ')';
 
         if ($Check->Occupation_Set === $Check->Occupation)
@@ -26,6 +31,9 @@
     GetDataTest();
 
     $Check->CheckUser('angelsIm', 0);
+    GetDataTest();
+
+    $Check->CheckUser('didisksks', 0);
     GetDataTest();
 
     $Check->CheckUser('peppy', 0);

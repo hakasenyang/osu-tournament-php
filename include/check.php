@@ -96,8 +96,11 @@
             $this->data_profile = $this->Parser->WEBParsing('https://osu.ppy.sh/u/' . $osuid);
             $this->OsuID = $this->Parser->splits($this->data_profile, 'var userId = ', ';');
             $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '\'s profile</title>');
-            if(empty($this->OsuID))
+            if(empty($this->OsuID) || empty($this->RealID))
+            {
+                $this->ResetObject();
                 return false;
+            }
 
             $this->Occupation = $this->Parser->splits($this->data_profile, '<div title=\'Occupation\'><i class=\'icon-pencil\'></i><div>', '</div></div>');
 
