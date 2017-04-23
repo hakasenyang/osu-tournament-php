@@ -33,6 +33,16 @@
          */
         private $mode;
         /**
+         * [$server osu! server
+         *          0 or osu = osu! Server
+         *          1 or ripple = Ripple Server
+         *          other = return false
+         *
+         *          using data : only use osu or ripple (string)]
+         * @var [int or string]
+         */
+        public $server;
+        /**
          * Temp data
          * [$data_profile description]
          * [$data_userdata description]
@@ -88,21 +98,48 @@
          * [CheckUser Get osu! UserID]
          * @param [string] $osuid [osu! ID]
          */
-        public function CheckUser($osuid, $mode)
+        public function CheckUser($osuid, $mode, $server='osu')
         {
             $this->ResetObject();
             $this->SelectMode($mode);
             // Transfer osu! ID to Num
-            $this->data_profile = $this->Parser->WEBParsing('https://osu.ppy.sh/u/' . $osuid);
-            $this->OsuID = $this->Parser->splits($this->data_profile, 'var userId = ', ';');
-            $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '\'s profile</title>');
+            switch($server)
+            {
+                case 'osu':
+                case 1:
+                    $this->server = 'osu';
+                    $this->data_profile = $this->Parser->WEBParsing('https://osu.ppy.sh/u/' . $osuid);
+                    $this->OsuID = $this->Parser->splits($this->data_profile, 'var userId = ', ';');
+                    $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '\'s profile</title>');
+                    break;
+                case 'ripple':
+                case 2:
+                    $this->server = 'ripple';
+                    $this->data_profile = $this->Parser->WEBParsing('https://ripple.moe/u/' . $osuid);
+                    $this->OsuID = $this->Parser->splits($this->data_profile, 'window.userID = \'', '\';');
+                    $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '&#39;s profile - Ripple');
+                    break;
+                default:
+                    $this->ResetObject();
+                    return false;
+            }
             if(empty($this->OsuID) || empty($this->RealID))
             {
                 $this->ResetObject();
                 return false;
             }
-
-            $this->Occupation = $this->Parser->splits($this->data_profile, '<div title=\'Occupation\'><i class=\'icon-pencil\'></i><div>', '</div></div>');
+            switch($this->server)
+            {
+                case 'osu':
+                    $this->Occupation = $this->Parser->splits($this->data_profile, '<div title=\'Occupation\'><i class=\'icon-pencil\'></i><div>', '</div></div>');
+                    break;
+                case 'ripple':
+                    $this->Occupation = $this->Parser->splits($this->data_profile, '(aka <b>', '</b>)');
+                    break;
+                default:
+                    $this->ResetObject();
+                    return false;
+            }
 
             $this->GetOccupation();
             $this->GetUserData();
@@ -110,22 +147,8 @@
             return $this->OsuID;
         }
         /**
-         * Not using this function.
+         * [GetOccupation Get user occupation data]
          */
-        /*
-        private function CheckOccupation()
-        {
-            if(empty($this->OsuID))
-                throw new \Exception('Please, CheckUser(OsuID) first!');
-            if(empty($this->Occupation_Set))
-                $this->GetOccupation();
-
-            if ($this->Occupation_Set === $this->Occupation)
-                return true;
-            else
-                return $this->Occupation;
-        }
-        */
         private function GetOccupation()
         {
             /**
@@ -138,28 +161,46 @@
                 $this->Occupation_Set = substr(md5($this->RealID . $this->OsuID . date('Ymd') . $this->mode), 0, 20);
             return $this->Occupation_Set;
         }
+        /**
+         * [GetUserData Get user data!]
+         */
         private function GetUserData()
         {
             if(empty($this->OsuID))
                 throw new \Exception('Please, CheckUser(OsuID) first!');
-
-            if(empty($this->data_userdata))
-                $this->data_userdata = $this->Parser->WEBParsing('https://osu.ppy.sh/pages/include/profile-general.php?u=' . $this->OsuID . '&m=' . $this->mode);
-            else
-                return true;
-
-            if (strpos($this->data_userdata, 'This user has not yet played any ranked maps in osu! mode.') === true)
-                return false;
-
-            if (strpos($this->data_userdata, 'This user has not played enough, or has not played recently.') === false)
+            switch($this->server)
             {
-                $this->Playcount = $this->Parser->splits($this->data_userdata, '<b>Play Count</b>: ', '</div>');
-                $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'Performance</a>: ', 'pp'));
-                $this->Rank = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'pp (#', ')'));
+                case 'osu':
+                    if(empty($this->data_userdata))
+                        $this->data_userdata = $this->Parser->WEBParsing('https://osu.ppy.sh/pages/include/profile-general.php?u=' . $this->OsuID . '&m=' . $this->mode);
+                    else
+                        return true;
+
+                    if (strpos($this->data_userdata, 'This user has not yet played any ranked maps in osu! mode.') === true)
+                        return false;
+
+                    if (strpos($this->data_userdata, 'This user has not played enough, or has not played recently.') === false)
+                    {
+                        $this->Playcount = $this->Parser->splits($this->data_userdata, '<b>Play Count</b>: ', '</div>');
+                        $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'Performance</a>: ', 'pp'));
+                        $this->Rank = str_replace(',', NULL, $this->Parser->splits($this->data_userdata, 'pp (#', ')'));
+                    }
+                    else
+                        return false;
+                    break;
+                case 'ripple':
+                    $this->Playcount = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 6 + ($this->mode * 9)));
+                    $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 3 + ($this->mode * 9)));
+                    $this->Rank = str_replace('#', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 1 + ($this->mode * 9)));
+                    break;
+                default:
+                    $this->ResetObject();
+                    return false;
             }
-            else
-                return false;
         }
+        /**
+         * [ResetObject All reset using data]
+         */
         private function ResetObject()
         {
             foreach ($this as $key => $value)

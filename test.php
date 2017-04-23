@@ -25,19 +25,35 @@
         echo 'Performance : ' . $Check->Performance;
         echo '<br>';
         echo 'Ranking : ' . $Check->Rank;
+        echo '<br>';
+        echo 'Server : ';
+        switch($Check->server)
+        {
+            case 'osu':
+                echo 'osu!';
+                break;
+            case 'ripple':
+                echo 'Ripple';
+                break;
+            default:
+                echo 'No';
+        }
         echo '<br><br>';
     }
-    $Check->CheckUser(2558286, 0);
+    $Check->CheckUser('Hakase', 0, 2);
     GetDataTest();
 
-    $Check->CheckUser('angelsIm', 0);
+    $Check->CheckUser('Hakase', 1, 2);
     GetDataTest();
 
-    $Check->CheckUser('didisksks', 0);
+    $Check->CheckUser(5173, 0, 2);
+    GetDataTest();
+
+    $Check->CheckUser('aergn8i39jf', 1, 2);
     GetDataTest();
 
     $Check->CheckUser('peppy', 0);
     GetDataTest();
 
-    $Check->CheckUser('banchobot', 0);
+    $Check->CheckUser('aergn8i39jf', 1, 1);
     GetDataTest();
