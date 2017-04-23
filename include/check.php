@@ -120,8 +120,7 @@
                     $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '&#39;s profile - Ripple');
                     break;
                 default:
-                    $this->ResetObject();
-                    return false;
+                    throw new \Exception($server . ' is not supported.');
             }
             if(empty($this->OsuID) || empty($this->RealID))
             {
@@ -137,8 +136,7 @@
                     $this->Occupation = $this->Parser->splits($this->data_profile, '(aka <b>', '</b>)');
                     break;
                 default:
-                    $this->ResetObject();
-                    return false;
+                    throw new \Exception($this->server . ' is not supported.');
             }
 
             $this->GetOccupation();
@@ -194,8 +192,7 @@
                     $this->Rank = str_replace('#', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 1 + ($this->mode * 9)));
                     break;
                 default:
-                    $this->ResetObject();
-                    return false;
+                    throw new \Exception($this->server . ' is not supported.');
             }
         }
         /**
