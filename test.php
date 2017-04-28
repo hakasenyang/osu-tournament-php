@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file test.php
+ * @author Hakase (contact@hakase.kr)
+ */
     require_once 'include.php';
     $Check = new OsuTournament\Check();
 

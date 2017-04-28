@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file include/db.php
+ * @author Hakase (contact@hakase.kr)
+ */
     namespace OsuTournament;
     /**
      * Osu Tournament for PHP

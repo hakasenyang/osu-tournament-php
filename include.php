@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file include.php
+ * @author Hakase (contact@hakase.kr)
+ */
     require_once 'include/db.php';
     require_once 'include/webparser.php';
     require_once 'include/check.php';

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file include/webparser.php
+ * @author Hakase (contact@hakase.kr)
+ */
     namespace OsuTournament;
     class Parser
     {

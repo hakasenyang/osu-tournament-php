@@ -1,52 +1,55 @@
 <?php
+/**
+ * @file include/check.php
+ * @author Hakase (contact@hakase.kr)
+ */
     namespace OsuTournament;
     class Check
     {
         /**
-         * [$Parser Load parser class]
-         * @var [class]
+         * $Parser Load parser class
+         * @var class
          */
         private $Parser;
         /**
-         * [$RealID transfer osu! UserID to ID]
-         * [$OsuID transfer osu! ID to UserID]
-         * @var [string]
+         * $RealID transfer osu! UserID to ID
+         * $OsuID  transfer osu! ID to UserID
+         * @var string
          */
         public $RealID, $OsuID;
         /**
-         * [$Playcount User playcount]
-         * [$Performance User performance]
-         * [$Rank User ranking]
-         * [$Occupation Check user occupation]
-         * [$Occupation_Set Setting user occupation data]
-         * @var [string]
+         * $Playcount        User playcount
+         * $Performance      User performance
+         * $Rank             User ranking
+         * $Occupation Check User occupation
+         * $Occupation_Set   Setting user occupation data
+         * @var string
          */
         public $Playcount, $Performance, $Rank, $Occupation, $Occupation_Set;
         /**
-         * [$mode osu! mode
-         *        0 = osu! standard (standard)
-         *        1 = Taiko (taiko)
-         *        2 = Catch The Beat (ctb)
-         *        3 = osu!mania (mania)
-         * ]
-         * @var [int]
+         * $mode osu! mode
+         *       0 = osu! standard (standard)
+         *       1 = Taiko (taiko)
+         *       2 = Catch The Beat (ctb)
+         *       3 = osu!mania (mania)
+         * @var int
          */
         private $mode;
         /**
-         * [$server osu! server
-         *          0 or osu = osu! Server
-         *          1 or ripple = Ripple Server
-         *          other = return false
+         * $server osu! server
+         *         0 or osu    = osu! Server
+         *         1 or ripple = Ripple Server
+         *         other       = return false
          *
-         *          using data : only use osu or ripple (string)]
-         * @var [int or string]
+         *         using data : only use osu or ripple (string)
+         * @var int, string
          */
         public $server;
         /**
          * Temp data
-         * [$data_profile description]
-         * [$data_userdata description]
-         * @var [string]
+         * $data_profile  Temp data
+         * $data_userdata Temp data
+         * @var string
          */
         private $data_profile, $data_userdata;
         /**
@@ -59,14 +62,13 @@
             $this->Parser = new Parser();
         }
         /**
-         * [SelectMode osu! mode]
-         * [$mode osu! mode
-         *        0 = osu! standard (standard)
-         *        1 = Taiko (taiko)
-         *        2 = Catch The Beat (ctb)
-         *        3 = osu!mania (mania)
-         * ]
-         * @var [int]
+         * SelectMode osu! mode
+         * $mode      osu! mode
+         *            0 = osu! standard (standard)
+         *            1 = Taiko (taiko)
+         *            2 = Catch The Beat (ctb)
+         *            3 = osu!mania (mania)
+         * @var int, string
          */
         private function SelectMode($mode)
         {
@@ -95,8 +97,10 @@
             return $this->mode;
         }
         /**
-         * [CheckUser Get osu! UserID]
-         * @param [string] $osuid [osu! ID]
+         * CheckUser Check user data
+         * @param string      $osuid  Input osu! ID
+         * @param int, string $mode   Input osu! mode
+         * @param string      $server Input osu! server (osu/ripple)
          */
         public function CheckUser($osuid, $mode, $server='osu')
         {
@@ -145,7 +149,7 @@
             return $this->OsuID;
         }
         /**
-         * [GetOccupation Get user occupation data]
+         * GetOccupation Get user occupation data
          */
         private function GetOccupation()
         {
@@ -160,7 +164,7 @@
             return $this->Occupation_Set;
         }
         /**
-         * [GetUserData Get user data!]
+         * GetUserData Get user data!
          */
         private function GetUserData()
         {
@@ -196,7 +200,7 @@
             }
         }
         /**
-         * [ResetObject All reset using data]
+         * ResetObject All reset using data
          */
         private function ResetObject()
         {
