@@ -1,6 +1,6 @@
 <?php
 /**
- * @file include/check.php
+ * @file class/osutournament/check.php
  * @author Hakase (contact@hakase.kr)
  */
     namespace OsuTournament;
