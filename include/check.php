@@ -191,9 +191,11 @@
                         return false;
                     break;
                 case 'ripple':
-                    $this->Playcount = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 6 + ($this->mode * 9)));
-                    $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 3 + ($this->mode * 9)));
-                    $this->Rank = str_replace('#', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', 1 + ($this->mode * 9)));
+                    $this->Rank = str_replace('#', NULL, $this->Parser->splits($this->data_profile, '<h1 data-mode="' . $this->mode . '"' . (($this->mode != 0) ? ' hidden' : NULL) . '>', '</h1>', 1));
+                    $checkrank = (strtolower($this->Rank) == 'unknown') ? 0 : 2;
+                    if ($checkrank == 0) $this->Rank = 0;
+                    $this->Playcount = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', $checkrank + 4 + ($this->mode * ($checkrank + 7))));
+                    $this->Performance = str_replace(',', NULL, $this->Parser->splits($this->data_profile, '<td class="right aligned">', '</td>', $checkrank + 1 + ($this->mode * ($checkrank + 7))));
                     break;
                 default:
                     throw new \Exception($this->server . ' is not supported.');
