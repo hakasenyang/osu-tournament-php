@@ -66,7 +66,7 @@
 
         public function __construct()
         {
-            $this->Parser = new Parser();
+            $this->Parser = new WEBParser();
         }
         /**
          * SelectMode osu! mode
