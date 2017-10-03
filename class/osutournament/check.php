@@ -48,7 +48,7 @@
         /**
          * $serverurl osu! ripple server custom URL
          *            Default URL : https://ripple.moe
-         *            use only $server = 1 (ripple)
+         *            use only $server = 2 (ripple)
          * @var string
          */
         private $serverurl;
