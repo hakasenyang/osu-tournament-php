@@ -62,3 +62,8 @@
     $Check->CheckUser('aergn8i39jf', 1, 1);
     GetDataTest();
 
+    $Check->CheckUser('3318', 0, 2, 'https://test.hoto.us/ripple');
+    GetDataTest();
+	
+    $Check->CheckUser('3318', 0, 2);
+    GetDataTest();
