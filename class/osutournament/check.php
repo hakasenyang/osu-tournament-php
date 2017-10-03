@@ -1,6 +1,6 @@
 <?php
 /**
- * @file include/check.php
+ * @file class/osutournament/check.php
  * @author Hakase (contact@hakase.kr)
  */
     namespace OsuTournament;
@@ -41,10 +41,17 @@
          *         1 or ripple = Ripple Server
          *         other       = return false
          *
-         *         using data : only use osu or ripple (string)
+         *         using data : use only osu or ripple (string)
          * @var int, string
          */
         public $server;
+        /**
+         * $serverurl osu! ripple server custom URL
+         *            Default URL : https://ripple.moe
+         *            use only $server = 2 (ripple)
+         * @var string
+         */
+        private $serverurl;
         /**
          * Temp data
          * $data_profile  Temp data
@@ -59,7 +66,7 @@
 
         public function __construct()
         {
-            $this->Parser = new Parser();
+            $this->Parser = new WEBParser();
         }
         /**
          * SelectMode osu! mode
@@ -98,11 +105,12 @@
         }
         /**
          * CheckUser Check user data
-         * @param string      $osuid  Input osu! ID
-         * @param int, string $mode   Input osu! mode
-         * @param string      $server Input osu! server (osu/ripple)
+         * @param string      $osuid     Input osu! ID
+         * @param int, string $mode      Input osu! mode
+         * @param string      $server    Input osu! server (osu/ripple)
+         * @param string      $serverurl Input ripple server custom URL
          */
-        public function CheckUser($osuid, $mode, $server='osu')
+        public function CheckUser($osuid, $mode, $server='osu', $serverurl='https://ripple.moe')
         {
             $this->ResetObject();
             $this->SelectMode($mode);
@@ -118,8 +126,9 @@
                     break;
                 case 'ripple':
                 case 2:
+                    $this->serverurl = $serverurl;
                     $this->server = 'ripple';
-                    $this->data_profile = $this->Parser->WEBParsing('https://ripple.moe/u/' . $osuid);
+                    $this->data_profile = $this->Parser->WEBParsing($serverurl.'/u/' . $osuid);
                     $this->OsuID = $this->Parser->splits($this->data_profile, 'window.userID = \'', '\';');
                     $this->RealID = $this->Parser->splits($this->data_profile, '<title>', '&#39;s profile - Ripple');
                     break;

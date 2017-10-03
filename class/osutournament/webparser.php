@@ -1,10 +1,10 @@
 <?php
 /**
- * @file include/webparser.php
+ * @file class/osutournament/webparser.php
  * @author Hakase (contact@hakase.kr)
  */
     namespace OsuTournament;
-    class Parser
+    class WEBParser
     {
         private $httph = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36';
         public function splits($data, $first, $end, $num = 1)

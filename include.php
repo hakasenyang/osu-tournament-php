@@ -3,11 +3,8 @@
  * @file include.php
  * @author Hakase (contact@hakase.kr)
  */
-    require_once 'include/db.php';
-    require_once 'include/webparser.php';
-    require_once 'include/check.php';
-
-    /**
-     * In production DB.
-     */
-    // $DB = new OsuTournament\DB('127.0.0.1', 'example', 'example', 'example');
+    spl_autoload_register(function($classname) {
+    	$file = __DIR__.'/class/'.strtolower(str_replace("\\", "/", $classname)).'.php';
+    	if(file_exists($file))
+        	require_once(__DIR__.'/class/'.strtolower(str_replace("\\", "/", $classname)).'.php');
+    });
