@@ -64,6 +64,6 @@
 
     $Check->CheckUser('3318', 0, 2, 'https://test.hoto.us/ripple');
     GetDataTest();
-	
+
     $Check->CheckUser('3318', 0, 2);
     GetDataTest();
