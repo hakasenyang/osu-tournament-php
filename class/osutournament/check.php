@@ -37,8 +37,8 @@
         private $mode;
         /**
          * $server osu! server
-         *         0 or osu    = osu! Server
-         *         1 or ripple = Ripple Server
+         *         1 or osu    = osu! Server
+         *         2 or ripple = Ripple Server
          *         other       = return false
          *
          *         using data : use only osu or ripple (string)
